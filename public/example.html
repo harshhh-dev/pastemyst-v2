@@ -1,0 +1,808 @@
+
+<!DOCTYPE html>
+<html lang="en" class="myst">
+	<head>
+		<title>PasteMyst</title>
+		<meta name="title" content="pastemyst"/>
+		<meta property="og:title" content="pastemyst"/>
+		<meta property="twitter:title" content="pastemyst"/>
+		<meta name="description" content="a powerful website for storing and sharing text and code snippets. completely free and open source."/>
+		<meta property="og:type" content="website"/>
+		<meta property="og:url" content="https://paste.myst.rs/"/>
+		<meta property="og:description" content="a powerful website for storing and sharing text and code snippets. completely free and open source."/>
+		<meta property="twitter:url" content="https://paste.myst.rs/"/>
+		<meta property="twitter:description" content="a powerful website for storing and sharing text and code snippets. completely free and open source."/>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+		<link rel="shortcut icon" type="image/x-icon" href="assets/icons/favicon.ico"/>
+		<link rel="stylesheet" href="./style/main.css"/>
+	</head>
+	<body>
+		<div id="container">
+			<div id="header">
+				<h1>
+					<img class="icon" src="assets/icons/pastemyst.svg"/>
+					<a href="/">pastemyst</a>
+				</h1>
+				<p class="description">
+					a simple website for sharing code.
+					version 2.0.0 <span class="alpha">alpha</span> (<a href="/changelog">changelog</a>).
+				</p>
+				<p class="warning">
+					this is a development instance, stuff might break, data might be deleted and it might not always be online
+				</p>
+				<nav>
+					<ul>
+						<li>
+							<a href="/">home</a>
+						</li>
+						<li><a href="/login">login</a>
+						</li>
+						<li>
+							<a href="https://github.com/codemyst/pastemyst-v2" target="_blank">github</a>
+						</li>
+						<li>
+							<a href="/api-docs">api</a>
+						</li>
+						<li class="no-delimiter">
+							<a href="/changelog">changelog</a>
+						</li>
+					</ul>
+					<a class="tooltip wordwrap">
+						<i class="fas fa-exchange-alt"></i><span class="tooltip-text">toggle editor word wrap</span>
+					</a>
+					<a class="tooltip fullwidth">
+						<i class="fas fa-expand"></i><span class="tooltip-text">toggle full width page</span>
+					</a>
+				</nav>
+			</div>
+			<div id="home">
+				<div class="paste-options">
+					<div id="title-editable">
+						<input name="title" placeholder="paste title" type="text" autocomplete="off" spellcheck="false" value="" class=""/>
+						<div id="expires-in-dropdown" class="no-search">
+							<div class="label">expires in:</div>
+							<details class="dropdown">
+								<summary>--</summary>
+								<div class="select">
+									<input type="text" autocomplete="off" placeholder="search..." name="search"/>
+									<p class="not-found hidden">no items found</p>
+									<input class="hidden" type="text" name="expires-in"/>
+									<label class="option">
+										<input type="radio" name="expires-in-temp" value="never" checked/>
+										<span>never</span>
+									</label>
+									<label class="option">
+										<input type="radio" name="expires-in-temp" value="1h"/>
+										<span>1 hour</span>
+									</label>
+									<label class="option">
+										<input type="radio" name="expires-in-temp" value="2h"/>
+										<span>2 hours</span>
+									</label>
+									<label class="option">
+										<input type="radio" name="expires-in-temp" value="10h"/>
+										<span>10 hours</span>
+									</label>
+									<label class="option">
+										<input type="radio" name="expires-in-temp" value="1d"/>
+										<span>1 day</span>
+									</label>
+									<label class="option">
+										<input type="radio" name="expires-in-temp" value="2d"/>
+										<span>2 days</span>
+									</label>
+									<label class="option">
+										<input type="radio" name="expires-in-temp" value="1w"/>
+										<span>1 week</span>
+									</label>
+									<label class="option">
+										<input type="radio" name="expires-in-temp" value="1m"/>
+										<span>1 month</span>
+									</label>
+									<label class="option">
+										<input type="radio" name="expires-in-temp" value="1y"/>
+										<span>1 year</span>
+									</label>
+									<!-- example option:--><!-- label.option--><!--     input(type="radio", name="example", value="slower", checked)--><!--     span slower-->
+								</div>
+							</details>
+						</div>
+					</div>
+				</div>
+				<div id="pasty-editors">
+					<div class="pasty-editor">
+						<div class="pasty-editor-options">
+							<i class="fas fa-minus-square pasty-editor-delete"></i>
+							<input class="pasty-editor-title" placeholder="pasty title" type="text" autocomplete="off" spellcheck="false" value=""/>
+							<input class="hidden" type="text" name="id" value=""/>
+							<div class="language-dropdown">
+								<div class="label">language:</div>
+								<details class="dropdown">
+									<summary>--</summary>
+									<div class="select">
+										<input type="text" autocomplete="off" placeholder="search..." name="search"/>
+										<p class="not-found hidden">no items found</p>
+										<input class="hidden" type="text" name="language"/>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Autodetect,null,text/plain" checked/>
+											<span>Autodetect</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Plain Text,null,text/plain"/>
+											<span>Plain Text</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="APL,apl,text/apl"/>
+											<span>APL</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="PGP,asciiarmor,application/pgp"/>
+											<span>PGP</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="ASN.1,asn.1,text/x-ttcn-asn"/>
+											<span>ASN.1</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Asterisk,asterisk,text/x-asterisk"/>
+											<span>Asterisk</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Brainfuck,brainfuck,text/x-brainfuck"/>
+											<span>Brainfuck</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="C,clike,text/x-csrc"/>
+											<span>C</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="C++,clike,text/x-c++src"/>
+											<span>C++</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Cobol,cobol,text/x-cobol"/>
+											<span>Cobol</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="C#,clike,text/x-csharp"/>
+											<span>C#</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Clojure,clojure,text/x-clojure"/>
+											<span>Clojure</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="ClojureScript,clojure,text/x-clojurescript"/>
+											<span>ClojureScript</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Closure Stylesheets (GSS),css,text/x-gss"/>
+											<span>Closure Stylesheets (GSS)</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="CMake,cmake,text/x-cmake"/>
+											<span>CMake</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="CoffeeScript,coffeescript,application/vnd.coffeescript"/>
+											<span>CoffeeScript</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Common Lisp,commonlisp,text/x-common-lisp"/>
+											<span>Common Lisp</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Cypher,cypher,application/x-cypher-query"/>
+											<span>Cypher</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Cython,python,text/x-cython"/>
+											<span>Cython</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Crystal,crystal,text/x-crystal"/>
+											<span>Crystal</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="CSS,css,text/css"/>
+											<span>CSS</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="CQL,sql,text/x-cassandra"/>
+											<span>CQL</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="D,d,text/x-d"/>
+											<span>D</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Dart,dart,application/dart"/>
+											<span>Dart</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="diff,diff,text/x-diff"/>
+											<span>diff</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Django,django,text/x-django"/>
+											<span>Django</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Dockerfile,dockerfile,text/x-dockerfile"/>
+											<span>Dockerfile</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="DTD,dtd,application/xml-dtd"/>
+											<span>DTD</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Dylan,dylan,text/x-dylan"/>
+											<span>Dylan</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="EBNF,ebnf,text/x-ebnf"/>
+											<span>EBNF</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="ECL,ecl,text/x-ecl"/>
+											<span>ECL</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="edn,clojure,application/edn"/>
+											<span>edn</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Eiffel,eiffel,text/x-eiffel"/>
+											<span>Eiffel</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Elm,elm,text/x-elm"/>
+											<span>Elm</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Embedded Javascript,htmlembedded,application/x-ejs"/>
+											<span>Embedded Javascript</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Embedded Ruby,htmlembedded,application/x-erb"/>
+											<span>Embedded Ruby</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Erlang,erlang,text/x-erlang"/>
+											<span>Erlang</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Esper,sql,text/x-esper"/>
+											<span>Esper</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Factor,factor,text/x-factor"/>
+											<span>Factor</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="FCL,fcl,text/x-fcl"/>
+											<span>FCL</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Forth,forth,text/x-forth"/>
+											<span>Forth</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Fortran,fortran,text/x-fortran"/>
+											<span>Fortran</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="F#,mllike,text/x-fsharp"/>
+											<span>F#</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Gas,gas,text/x-gas"/>
+											<span>Gas</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Gherkin,gherkin,text/x-feature"/>
+											<span>Gherkin</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="GitHub Flavored Markdown,gfm,text/x-gfm"/>
+											<span>GitHub Flavored Markdown</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Go,go,text/x-go"/>
+											<span>Go</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Groovy,groovy,text/x-groovy"/>
+											<span>Groovy</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="HAML,haml,text/x-haml"/>
+											<span>HAML</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Haskell,haskell,text/x-haskell"/>
+											<span>Haskell</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Haskell (Literate),haskell-literate,text/x-literate-haskell"/>
+											<span>Haskell (Literate)</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Haxe,haxe,text/x-haxe"/>
+											<span>Haxe</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="HXML,haxe,text/x-hxml"/>
+											<span>HXML</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="ASP.NET,htmlembedded,application/x-aspx"/>
+											<span>ASP.NET</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="HTML,htmlmixed,text/html"/>
+											<span>HTML</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="HTTP,http,message/http"/>
+											<span>HTTP</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="IDL,idl,text/x-idl"/>
+											<span>IDL</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Pug,pug,text/x-pug"/>
+											<span>Pug</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Java,clike,text/x-java"/>
+											<span>Java</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Java Server Pages,htmlembedded,application/x-jsp"/>
+											<span>Java Server Pages</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="JavaScript,javascript,text/javascript"/>
+											<span>JavaScript</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="JSON,javascript,application/json"/>
+											<span>JSON</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="JSON-LD,javascript,application/ld+json"/>
+											<span>JSON-LD</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="JSX,jsx,text/jsx"/>
+											<span>JSX</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Jinja2,jinja2,text/jinja2"/>
+											<span>Jinja2</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Julia,julia,text/x-julia"/>
+											<span>Julia</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Kotlin,clike,text/x-kotlin"/>
+											<span>Kotlin</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="LESS,css,text/x-less"/>
+											<span>LESS</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="LiveScript,livescript,text/x-livescript"/>
+											<span>LiveScript</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Lua,lua,text/x-lua"/>
+											<span>Lua</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Markdown,markdown,text/x-markdown"/>
+											<span>Markdown</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="mIRC,mirc,text/mirc"/>
+											<span>mIRC</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="MariaDB SQL,sql,text/x-mariadb"/>
+											<span>MariaDB SQL</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Mathematica,mathematica,text/x-mathematica"/>
+											<span>Mathematica</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Modelica,modelica,text/x-modelica"/>
+											<span>Modelica</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="MUMPS,mumps,text/x-mumps"/>
+											<span>MUMPS</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="MS SQL,sql,text/x-mssql"/>
+											<span>MS SQL</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="mbox,mbox,application/mbox"/>
+											<span>mbox</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="MySQL,sql,text/x-mysql"/>
+											<span>MySQL</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Nginx,nginx,text/x-nginx-conf"/>
+											<span>Nginx</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="NSIS,nsis,text/x-nsis"/>
+											<span>NSIS</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="NTriples,ntriples,application/n-triples"/>
+											<span>NTriples</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Objective-C,clike,text/x-objectivec"/>
+											<span>Objective-C</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="OCaml,mllike,text/x-ocaml"/>
+											<span>OCaml</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Octave,octave,text/x-octave"/>
+											<span>Octave</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Oz,oz,text/x-oz"/>
+											<span>Oz</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Pascal,pascal,text/x-pascal"/>
+											<span>Pascal</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="PEG.js,pegjs,null"/>
+											<span>PEG.js</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Perl,perl,text/x-perl"/>
+											<span>Perl</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="PHP,php,text/x-php"/>
+											<span>PHP</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Pig,pig,text/x-pig"/>
+											<span>Pig</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="PLSQL,sql,text/x-plsql"/>
+											<span>PLSQL</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="PowerShell,powershell,application/x-powershell"/>
+											<span>PowerShell</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Properties files,properties,text/x-properties"/>
+											<span>Properties files</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="ProtoBuf,protobuf,text/x-protobuf"/>
+											<span>ProtoBuf</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Python,python,text/x-python"/>
+											<span>Python</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Puppet,puppet,text/x-puppet"/>
+											<span>Puppet</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Q,q,text/x-q"/>
+											<span>Q</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="R,r,text/x-rsrc"/>
+											<span>R</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="reStructuredText,rst,text/x-rst"/>
+											<span>reStructuredText</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="RPM Changes,rpm,text/x-rpm-changes"/>
+											<span>RPM Changes</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="RPM Spec,rpm,text/x-rpm-spec"/>
+											<span>RPM Spec</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Ruby,ruby,text/x-ruby"/>
+											<span>Ruby</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Rust,rust,text/x-rustsrc"/>
+											<span>Rust</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="SAS,sas,text/x-sas"/>
+											<span>SAS</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Sass,sass,text/x-sass"/>
+											<span>Sass</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Scala,clike,text/x-scala"/>
+											<span>Scala</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Scheme,scheme,text/x-scheme"/>
+											<span>Scheme</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="SCSS,css,text/x-scss"/>
+											<span>SCSS</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Shell,shell,text/x-sh"/>
+											<span>Shell</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Sieve,sieve,application/sieve"/>
+											<span>Sieve</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Slim,slim,text/x-slim"/>
+											<span>Slim</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Smalltalk,smalltalk,text/x-stsrc"/>
+											<span>Smalltalk</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Smarty,smarty,text/x-smarty"/>
+											<span>Smarty</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Solr,solr,text/x-solr"/>
+											<span>Solr</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="SML,mllike,text/x-sml"/>
+											<span>SML</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Soy,soy,text/x-soy"/>
+											<span>Soy</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="SPARQL,sparql,application/sparql-query"/>
+											<span>SPARQL</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Spreadsheet,spreadsheet,text/x-spreadsheet"/>
+											<span>Spreadsheet</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="SQL,sql,text/x-sql"/>
+											<span>SQL</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="SQLite,sql,text/x-sqlite"/>
+											<span>SQLite</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Squirrel,clike,text/x-squirrel"/>
+											<span>Squirrel</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Stylus,stylus,text/x-styl"/>
+											<span>Stylus</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Swift,swift,text/x-swift"/>
+											<span>Swift</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="sTeX,stex,text/x-stex"/>
+											<span>sTeX</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="LaTeX,stex,text/x-latex"/>
+											<span>LaTeX</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="SystemVerilog,verilog,text/x-systemverilog"/>
+											<span>SystemVerilog</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Tcl,tcl,text/x-tcl"/>
+											<span>Tcl</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Textile,textile,text/x-textile"/>
+											<span>Textile</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="TiddlyWiki ,tiddlywiki,text/x-tiddlywiki"/>
+											<span>TiddlyWiki </span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Tiki wiki,tiki,text/tiki"/>
+											<span>Tiki wiki</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="TOML,toml,text/x-toml"/>
+											<span>TOML</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Tornado,tornado,text/x-tornado"/>
+											<span>Tornado</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="troff,troff,text/troff"/>
+											<span>troff</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="TTCN,ttcn,text/x-ttcn"/>
+											<span>TTCN</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="TTCN_CFG,ttcn-cfg,text/x-ttcn-cfg"/>
+											<span>TTCN_CFG</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Turtle,turtle,text/turtle"/>
+											<span>Turtle</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="TypeScript,javascript,application/typescript"/>
+											<span>TypeScript</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="TypeScript-JSX,jsx,text/typescript-jsx"/>
+											<span>TypeScript-JSX</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Twig,twig,text/x-twig"/>
+											<span>Twig</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Web IDL,webidl,text/x-webidl"/>
+											<span>Web IDL</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="VB.NET,vb,text/x-vb"/>
+											<span>VB.NET</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="VBScript,vbscript,text/vbscript"/>
+											<span>VBScript</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Velocity,velocity,text/velocity"/>
+											<span>Velocity</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Verilog,verilog,text/x-verilog"/>
+											<span>Verilog</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="VHDL,vhdl,text/x-vhdl"/>
+											<span>VHDL</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Vue.js Component,vue,script/x-vue"/>
+											<span>Vue.js Component</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="XML,xml,application/xml"/>
+											<span>XML</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="XQuery,xquery,application/xquery"/>
+											<span>XQuery</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Yacas,yacas,text/x-yacas"/>
+											<span>Yacas</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="YAML,yaml,text/x-yaml"/>
+											<span>YAML</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="Z80,z80,text/x-z80"/>
+											<span>Z80</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="mscgen,mscgen,text/x-mscgen"/>
+											<span>mscgen</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="xu,mscgen,text/x-xu"/>
+											<span>xu</span>
+										</label>
+										<label class="option">
+											<input type="radio" name="language-temp" value="msgenny,mscgen,text/x-msgenny"/>
+											<span>msgenny</span>
+										</label>
+										<!-- example option:--><!-- label.option--><!--     input(type="radio", name="example", value="slower", checked)--><!--     span slower-->
+									</div>
+								</details>
+							</div>
+						</div>
+						<textarea class="editor" type="text" autocomplete="off" spellcheck="false"></textarea>
+					</div>
+				</div>
+				<a class="add-editor">
+					<i class="fa fa-plus-square"></i><p>add editor</p>
+				</a>
+				<div class="paste-options-bottom">
+					<div class="paste-buttons">
+						<a id="create-paste">create paste</a>
+						<div id="encrypt-options" class="hidden">
+							<input type="password" id="encrypt-password" placeholder="password"/>
+							<p>make sure to use a strong password!</p><p>it's impossible to get your paste back if you forget the password! unless you have a lot of time (and can keep the universe alive while you do it)</p>
+						</div>
+					</div>
+					<div class="paste-options-bottom-options">
+						<div class="tooltip">
+							<span class="tooltip-text">encrypts the paste with a password</span>
+							<input type="checkbox" id="encrypt"/>
+							<label for="encrypt">encrypt</label>
+						</div>
+					</div>
+				</div>
+				<div class="paste-options-bottom-1px"></div>
+				<form id="paste-create-form-hidden" action="/paste" method="post">
+					<input type="text" name="title"/>
+					<input type="text" name="tags"/>
+					<input type="text" name="expiresIn"/>
+					<input type="checkbox" name="isPrivate"/>
+					<input type="checkbox" name="isPublic"/>
+					<input type="checkbox" name="isAnonymous"/>
+					<input type="text" name="pasties"/>
+					<input type="checkbox" name="encrypt"/>
+					<input type="password" name="password"/>
+					<input type="submit"/>
+				</form>
+			</div>
+			<footer>
+				<div class="copyright">
+					<p>
+						copyright &copy; <a href="https://github.com/codemyst" target="_blank">codemyst</a> 2020
+					</p>
+					<p>contact: code at myst.rs</p>
+				</div>
+				<div class="theme">
+					<label for="theme">theme:</label>
+					<select name="theme" id="theme-picker">
+						<option value="myst">myst</option><option value="base16-light">base16-light</option><option value="dracula">dracula</option><option value="monokai">monokai</option><option value="solarized">solarized</option>
+					</select>
+				</div>
+				<div class="paste-amount">31 currently active pastes </div>
+			</footer>
+		</div>
+		<script src="scripts/libs/codemirror/codemirror.js"></script><script src="scripts/libs/codemirror/simple.js"></script><script src="scripts/libs/codemirror/overlay.js"></script><script src="scripts/libs/codemirror/multiplex.js"></script><script type="module" src="scripts/main.js"></script><script type="module" src="scripts/pages/home.js"></script>
+	<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"rayId":"5dd203c19e6bfdd9","r":1,"version":"2020.9.1","si":10}'></script>
+</body>
+</html>
